@@ -12,7 +12,7 @@ function Home() {
   return (
     <>
       <MovieSlider />
-      <MovieRow movies={movies} />
+      <MovieRow title='Similar' movies={movies} />
     </>
   )
 }

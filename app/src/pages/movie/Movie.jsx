@@ -1,4 +1,5 @@
 import api from 'api'
+import MovieRow from 'components/movie-row/MovieRow'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
@@ -7,9 +8,12 @@ import './movie.scss'
 function Movie() {
   const { id } = useParams()
   const [movie, setMovie] = useState(null)
+  const [similarMovies, setSimilarMovies] = useState([])
 
   useEffect(() => {
     api.getMovie(id).then((movie) => setMovie(movie))
+    api.getMovies(10, 1).then((movies) => setSimilarMovies(movies))
+    window.scrollTo(0, 0)
   }, [id])
   if (movie) {
     return (
@@ -40,6 +44,7 @@ function Movie() {
             <p className='overview'>{movie.overview}</p>
           </div>
         </div>
+        <MovieRow title='Popular Movies' movies={similarMovies} />
       </div>
     )
   }

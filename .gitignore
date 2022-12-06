@@ -1,6 +1,4 @@
 .env
 node_modules
 __pycache__
-api/data/full/genome-scores.csv
-api/data/full/genome-tags.csv
-api/data/full/ratings.csv
+recommender/data/full/*.csv

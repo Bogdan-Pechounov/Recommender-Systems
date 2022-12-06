@@ -6,12 +6,12 @@ import { SwiperSlide, Swiper } from 'swiper/react'
 
 import './movie-row.scss'
 
-function MovieRow({ movies }) {
+function MovieRow({ title, movies }) {
   return (
     <div className='movie-row'>
       <div className='section mb-3'>
         <div className='header mb-2'>
-          <h2>Popular Movies</h2>
+          <h2>{title}</h2>
           <Link to='/movies'>
             <OutlineButton className='small'>View more</OutlineButton>
           </Link>
