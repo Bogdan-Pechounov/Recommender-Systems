@@ -3,7 +3,6 @@ import Navbar from 'components/navbar/Navbar'
 
 import 'App.scss'
 import 'swiper/swiper.min.css'
-import './assets/boxicons-2.0.7/css/boxicons.min.css'
 
 import Home from 'pages/Home'
 import Footer from 'components/footer/Footer'
