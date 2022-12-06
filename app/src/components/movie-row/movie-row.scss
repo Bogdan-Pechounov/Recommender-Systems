@@ -1,0 +1,26 @@
+@use '../../scss/' as *;
+
+.movie-row {
+  // max-width: 1660px;
+  // margin: auto;
+
+  .header {
+    @include flex(center, space-between);
+  }
+
+  .swiper-slide {
+    width: 15%;
+
+    @include tablet {
+      width: 30%;
+    }
+
+    @include mobile {
+      width: 40%;
+    }
+  }
+}
+
+.section {
+  padding: 0 2rem;
+}
