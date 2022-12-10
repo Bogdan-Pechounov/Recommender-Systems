@@ -10,35 +10,67 @@ import { useSwiper } from 'swiper/react'
 //TODO average rating, rating graph, similarity graph (0.9-0.8, 0.8-0.7, ...)
 //TODO latent features, sort by latent feature page, bias (and how it correlates with avg rating)
 
-const numRowItems = 20
+const numRowItems = 10
 
 function Movie() {
   const { id } = useParams()
   const [movie, setMovie] = useState()
+
   const [features, setFeatures] = useState([])
   const [bias, setBias] = useState()
+
+  const [movieIds, setMovieIds] = useState([])
   const [similarMovies, setSimilarMovies] = useState([])
   const [dissimilarMovies, setDissimilarMovies] = useState([])
+  const [similarEnd, setSimilarEnd] = useState(0)
+  const [dissimilarEnd, setDissimilarEnd] = useState(0)
 
   useEffect(() => {
     api.getMovie(id).then((movie) => setMovie(movie))
-    recommender.similarMovies(id).then((movieIds) => {
-      api
-        .populate(movieIds.slice(0, numRowItems))
-        .then((movies) => setSimilarMovies(movies))
-      api
-        .populate(
-          movieIds
-            .slice(movieIds.length - numRowItems, movieIds.length)
-            .reverse()
-        )
-        .then((movies) => setDissimilarMovies(movies))
-    })
+    recommender.similarMovies(id).then((movieIds) => setMovieIds(movieIds))
     recommender.latentFeatures(id).then((features) => setFeatures(features))
     recommender.bias(id).then((bias) => setBias(bias))
-
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [id])
+
+  //Find movie details one by one
+  useEffect(() => {
+    getSimilarMovies().then(setSimilarMovies)
+    getDissimilarMovies().then(setDissimilarMovies)
+  }, [movieIds])
+
+  //load more movies dynamically
+  useEffect(() => {
+    getSimilarMovies().then((movies) =>
+      setSimilarMovies([...similarMovies, ...movies])
+    )
+  }, [similarEnd])
+
+  useEffect(() => {
+    getDissimilarMovies().then((movies) =>
+      setDissimilarMovies([...dissimilarMovies, ...movies])
+    )
+  }, [dissimilarEnd])
+
+  async function getSimilarMovies() {
+    const newMovieIds = movieIds.slice(
+      similarMovies.length,
+      similarMovies.length + numRowItems
+    )
+    const movies = await api.populate(newMovieIds)
+    return movies
+  }
+
+  async function getDissimilarMovies() {
+    const newMovieIds = movieIds
+      .slice(
+        movieIds.length - dissimilarMovies.length - numRowItems,
+        movieIds.length - dissimilar,
+        Movies.length
+      )
+      .reverse()
+    const movies = await api.populate(newMovieIds)
+    return movies
+  }
 
   if (movie) {
     return (
@@ -49,7 +81,7 @@ function Movie() {
             backgroundImage: `url(${api.originalImage(movie.backdrop_path)})`,
           }}
         ></div>
-        <div className='mb-3 content'>
+        <div className='content mb-3'>
           <div className='poster'>
             <img src={api.originalImage(movie.poster_path)} alt='' />
           </div>
@@ -94,8 +126,20 @@ function Movie() {
           </div>
         </div>
 
-        <MovieRow title='Similar Movies' movies={similarMovies} />
-        <MovieRow title='Dissimilar Movies' movies={dissimilarMovies} />
+        <MovieRow
+          title='Similar Movies'
+          movies={similarMovies}
+          onReachEnd={() => {
+            setSimilarEnd(similarMovies.length) //in case reach event is triggered many times
+          }}
+        />
+        <MovieRow
+          title='Dissimilar Movies'
+          movies={dissimilarMovies}
+          onReachEnd={() => {
+            setDissimilarEnd(dissimilarMovies.length)
+          }}
+        />
       </div>
     )
   } else {
