@@ -7,9 +7,9 @@ function mapToSortQuery(sort) {
   if (sort == 'recent') {
     return { release_date: -1 }
   } else if (sort == 'popular') {
-    return { rating_count: -1 }
-  } else if (sort == 'best') {
     return { rating_total: -1 }
+  } else if (sort == 'best') {
+    return { votes: -1 }
   } else if (sort == 'top') {
     return { rating_avg: -1 }
   } else if (sort == 'trending') {
@@ -20,13 +20,18 @@ function mapToSortQuery(sort) {
 }
 
 router.get('/', async (req, res) => {
-  const { page = 1, limit = 10, sort } = req.query //paginated
-  const movies = await Movie.find()
-    .limit(limit)
-    .skip((page - 1) * limit)
-    .sort(mapToSortQuery(sort))
-    .exec()
-  res.send(movies)
+  try {
+    const { page = 1, limit = 10, sort } = req.query //paginated
+    const movies = await Movie.find()
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort(mapToSortQuery(sort))
+      .exec()
+    res.send(movies)
+  } catch (err) {
+    console.log(err)
+    res.status(400).send(err)
+  }
 })
 
 router.get('/:id', async (req, res) => {

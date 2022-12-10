@@ -20,11 +20,15 @@ function Home() {
   return (
     <>
       <MovieSlider />
-      <MovieRow title='Trending' movies={trendingMovies} />
-      <MovieRow title='Popular' movies={popularMovies} />
-      <MovieRow title='Best' movies={bestMovies} />
-      <MovieRow title='Top Rated' movies={topMovies} />
-      <MovieRow title='Recent' movies={recentMovies} />
+      <MovieRow
+        title='Trending'
+        movies={trendingMovies}
+        to='/movies/trending'
+      />
+      <MovieRow title='Popular' movies={popularMovies} to='/movies/popular' />
+      <MovieRow title='Best' movies={bestMovies} to='/movies/best' />
+      <MovieRow title='Top Rated' movies={topMovies} to='/movies/top' />
+      <MovieRow title='Recent' movies={recentMovies} to='/movies/recent' />
     </>
   )
 }

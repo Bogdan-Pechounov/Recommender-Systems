@@ -13,7 +13,8 @@ const movie = new Schema({
   rating_count: { type: Number, default: 0 },
   rating_total: { type: Number, default: 0 },
   rating_avg: Number,
-  trend_score: Number
+  trend_score: Number,
+  votes: Number,
 })
 
 module.exports = mongoose.model('Movie', movie)

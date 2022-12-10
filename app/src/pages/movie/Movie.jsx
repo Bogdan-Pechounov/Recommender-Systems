@@ -64,8 +64,7 @@ function Movie() {
     const newMovieIds = movieIds
       .slice(
         movieIds.length - dissimilarMovies.length - numRowItems,
-        movieIds.length - dissimilar,
-        Movies.length
+        movieIds.length - dissimilarMovies.length
       )
       .reverse()
     const movies = await api.populate(newMovieIds)

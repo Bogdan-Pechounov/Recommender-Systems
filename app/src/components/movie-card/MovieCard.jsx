@@ -6,6 +6,13 @@ import { Link } from 'react-router-dom'
 import './movie-card.scss'
 
 function MovieCard({ movie }) {
+  // console.log(
+  //   movie._id,
+  //   movie.release_date,
+  //   movie.rating_avg,
+  //   movie.rating_count,
+  //   movie.trend_score
+  // )
   return (
     <Link to={`/movie/${movie._id}`}>
       {movie.poster_path ? (

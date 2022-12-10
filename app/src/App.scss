@@ -19,7 +19,7 @@ html {
 
 body {
   font-family: $font-family;
-  font-size: x-large;
+  font-size: x- large;
   font-weight: 400;
   line-height: 1.5;
 
@@ -61,6 +61,9 @@ input {
   margin-bottom: 2rem;
 }
 
+.section {
+  padding: 0 2rem;
+}
 // loading animation
 .loading {
   margin-left: auto;
