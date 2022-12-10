@@ -3,20 +3,40 @@ const Movie = require('../models/movie')
 
 const router = Router()
 
+function mapToSortQuery(sort) {
+  if (sort == 'recent') {
+    return { release_date: -1 }
+  } else if (sort == 'popular') {
+    return { rating_count: -1 }
+  } else if (sort == 'best') {
+    return { rating_total: -1 }
+  } else if (sort == 'top') {
+    return { rating_avg: -1 }
+  } else if (sort == 'trending') {
+    return { trend_score: -1 }
+  } else {
+    return { _id: 1 } //sort by id by default
+  }
+}
+
 router.get('/', async (req, res) => {
-  const { page = 1, limit = 10 } = req.query
+  const { page = 1, limit = 10, sort } = req.query //paginated
   const movies = await Movie.find()
     .limit(limit)
     .skip((page - 1) * limit)
-    .sort({ movieId: 1 })
+    .sort(mapToSortQuery(sort))
     .exec()
   res.send(movies)
 })
 
 router.get('/:id', async (req, res) => {
-  const { id } = req.params
-  const movie = await Movie.findOne({ movieId: id })
-  res.send(movie)
+  try {
+    const { id } = req.params
+    const movie = await Movie.findById(id)
+    res.send(movie)
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
 
 router.post('/', async (req, res) => {
@@ -24,13 +44,15 @@ router.post('/', async (req, res) => {
     const movie = await Movie.create(req.body)
     res.send(movie)
   } catch (err) {
-    res.status(500).send(err)
+    console.log(err)
+    res.status(400).send(err)
   }
 })
 
-router.put('/', async (req, res) => {
-  const { movieId } = req.body
-  const msg = await Movie.updateOne({ movieId }, req.body)
+//used to update details after creation
+router.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const msg = await Movie.updateOne({ _id: id }, req.body)
   res.send(msg)
 })
 

@@ -1,18 +1,30 @@
-import api from 'api'
+import api from 'api/api'
 import MovieRow from 'components/movie-row/MovieRow'
 import MovieSlider from 'components/movie-slider/MovieSlider'
 import React, { useEffect, useState } from 'react'
 
 function Home() {
-  const [movies, setMovies] = useState([])
+  const [popularMovies, setPopularMovies] = useState([])
+  const [bestMovies, setBestMovies] = useState([])
+  const [topMovies, setTopMovies] = useState([])
+  const [recentMovies, setRecentMovies] = useState([])
+  const [trendingMovies, setTrendingMovies] = useState([])
 
   useEffect(() => {
-    api.getMovies(10, 1).then((movies) => setMovies(movies))
+    api.getMovies(20, 1, 'popular').then((movies) => setPopularMovies(movies))
+    api.getMovies(20, 1, 'best').then((movies) => setBestMovies(movies))
+    api.getMovies(20, 1, 'top').then((movies) => setTopMovies(movies))
+    api.getMovies(20, 1, 'recent').then((movies) => setRecentMovies(movies))
+    api.getMovies(20, 1, 'trending').then((movies) => setTrendingMovies(movies))
   }, [])
   return (
     <>
       <MovieSlider />
-      <MovieRow title='Similar' movies={movies} />
+      <MovieRow title='Trending' movies={trendingMovies} />
+      <MovieRow title='Popular' movies={popularMovies} />
+      <MovieRow title='Best' movies={bestMovies} />
+      <MovieRow title='Top Rated' movies={topMovies} />
+      <MovieRow title='Recent' movies={recentMovies} />
     </>
   )
 }

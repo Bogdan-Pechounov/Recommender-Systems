@@ -17,8 +17,10 @@ mongoose.connect(DB_URI).then(() => {
 })
 
 //Middleware
+//TODO exclude POST PUT in production
 app.use(express.json())
 app.use(cors({ origin: 'http://localhost:3000' }))
 
 //Routes
 app.use('/movies', require('./routes/movies'))
+app.use('/ratings', require('./routes/ratings'))

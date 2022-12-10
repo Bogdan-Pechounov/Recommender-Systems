@@ -5,7 +5,7 @@ import './button.scss'
 function Button({ className, onClick, children }) {
   return (
     <button
-      className={`btn ${className}`}
+      className={`btn ${className ? className : ''}`}
       onClick={() => {
         if (onClick) onClick()
       }}
@@ -17,7 +17,10 @@ function Button({ className, onClick, children }) {
 
 export function OutlineButton({ className, onClick, children }) {
   return (
-    <Button className={`btn-outline ${className}`} onClick={onClick}>
+    <Button
+      className={`btn-outline ${className ? className : ''}`}
+      onClick={onClick}
+    >
       {children}
     </Button>
   )

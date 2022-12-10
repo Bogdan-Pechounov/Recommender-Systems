@@ -1,0 +1,41 @@
+import axios from 'axios'
+
+const axiosClient = axios.create({
+  baseURL: 'http://localhost:3001',
+})
+
+const api = {
+  w500Image(path) {
+    if (!path) return '/no-image-icon.png'
+    return `https://image.tmdb.org/t/p/w500${path}`
+  },
+  originalImage(imgPath) {
+    if (!imgPath) return '/no-image-icon.png'
+    return `https://image.tmdb.org/t/p/original${imgPath}`
+  },
+  async getMovies(limit, page, sort = '') {
+    const { data } = await axiosClient.get(
+      `/movies/?limit=${limit}&page=${page}&sort=${sort}`
+    )
+    return data
+  },
+  async getMovie(id) {
+    const { data } = await axiosClient.get(`/movies/${id}`)
+    return data
+  },
+  async populate(similarMovieIds) {
+    const promises = []
+    for (const [movieId, similarity] of similarMovieIds) {
+      promises.push(
+        (async () => {
+          const movie = await api.getMovie(movieId)
+          movie.similarity = similarity
+          return movie
+        })()
+      )
+    }
+    return Promise.all(promises)
+  },
+}
+
+export default api

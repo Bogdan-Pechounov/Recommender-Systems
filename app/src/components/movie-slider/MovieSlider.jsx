@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import './movie-slider.scss'
 import Button, { OutlineButton } from 'components/button/Button'
-import api from 'api'
+import api from 'api/api'
 
 function MovieSlider() {
   const [movies, setMovies] = useState([])
@@ -21,7 +21,7 @@ function MovieSlider() {
         grabCursor={true}
         spaceBetween={0}
         slidesPerView={1}
-        autoplay={{ delay: 4000 }}
+        autoplay={{ delay: 3000 }}
       >
         {movies.map((movie, i) => (
           <SwiperSlide key={i}>
@@ -50,7 +50,7 @@ function MovieSliderItem({ movie, isActive }) {
           <div className='title'>{movie.title}</div>
           <div className='overview'>{movie.overview}</div>
           <div className='btns'>
-            <Button onClick={() => navigate('/movie/' + movie.movieId)}>
+            <Button onClick={() => navigate('/movie/' + movie._id)}>
               Watch now
             </Button>
             <OutlineButton>Watch trailer</OutlineButton>
