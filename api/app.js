@@ -11,6 +11,7 @@ const origin = process.env.ORIGIN || 'http://localhost:3000'
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`)
+  console.log('Allowed access to:', origin)
 })
 app.get('/', (_, res) => res.send('Hello there!'))
 

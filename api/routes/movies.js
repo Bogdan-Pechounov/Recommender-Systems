@@ -50,21 +50,25 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
-  try {
-    const movie = await Movie.create(req.body)
-    res.send(movie)
-  } catch (err) {
-    console.log(err)
-    res.status(400).send(err)
-  }
-})
+//only allow in development
+if (!process.env.RENDER) {
+  console.log('Modifications allowed')
+  router.post('/', async (req, res) => {
+    try {
+      const movie = await Movie.create(req.body)
+      res.send(movie)
+    } catch (err) {
+      console.log(err)
+      res.status(400).send(err)
+    }
+  })
 
-//used to update details after creation
-router.put('/:id', async (req, res) => {
-  const { id } = req.params
-  const msg = await Movie.updateOne({ _id: id }, req.body)
-  res.send(msg)
-})
+  //used to update details after creation
+  router.put('/:id', async (req, res) => {
+    const { id } = req.params
+    const msg = await Movie.updateOne({ _id: id }, req.body)
+    res.send(msg)
+  })
+}
 
 module.exports = router
