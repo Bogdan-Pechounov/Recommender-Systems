@@ -5,11 +5,15 @@ import os
 
 app = Flask(__name__)
 
+# load model
 model = Model('model-10-20-0.537.hdf5')
-cors = CORS(app, resources={r"*": {"origins": "http://localhost:3000"}})
 
-for i in os.environ.items():
-    print(i)
+# cors
+try:
+    origin = os.environ['ORIGIN']
+except:
+    origin = "http://localhost:3000"
+cors = CORS(app, resources={r"*": {"origins": origin}})
 
 
 @app.route("/movie/<int:movie_id>")
