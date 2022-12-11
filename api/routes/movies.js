@@ -25,7 +25,6 @@ function mapToSortQuery(sort, search) {
 
 router.get('/', async (req, res) => {
   try {
-    console.log(req)
     const { page = 1, limit = 10, sort, search } = req.query //paginated
     const movies = await Movie.find(
       search ? { $text: { $search: search } } : {}
