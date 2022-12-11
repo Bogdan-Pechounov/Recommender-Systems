@@ -6,7 +6,7 @@ import { Link, useParams } from 'react-router-dom'
 import ReactLoading from 'react-loading'
 
 import './movie.scss'
-import { useSwiper } from 'swiper/react'
+
 //TODO average rating, rating graph, similarity graph (0.9-0.8, 0.8-0.7, ...)
 //TODO latent features, sort by latent feature page, bias (and how it correlates with avg rating)
 //TODO model selector
