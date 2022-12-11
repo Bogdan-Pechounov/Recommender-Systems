@@ -15,24 +15,28 @@ function Catalog() {
 
   //load more
   useEffect(() => {
-    api
-      .getMovies(20, page, sort)
-      .then((newMovies) => setMovies([...movies, ...newMovies]))
-  }, [page])
-
-  //search
-  useEffect(() => {
-    api.getMovies(20, page, sort, title).then((movies) => setMovies(movies))
-  }, [title])
+    api.getMovies(20, page, sort, title).then((newMovies) => {
+      if (page > 0) {
+        setMovies([...movies, ...newMovies])
+      }
+    })
+  }, [page, title])
 
   return (
     <>
       <PageHeader title={sort ? sort : 'Movies'} />
       <div className='section mb-3'>
         <div className='section mb-3'>
-          <Search title={title} setTitle={setTitle} />
+          <Search
+            title={title}
+            setTitle={(value) => {
+              setTitle(value)
+              //reset page
+              setPage(1)
+              setMovies([])
+            }}
+          />
         </div>
-        <p>{title}</p>
         <MovieGrid movies={movies} loadMore={() => setPage(page + 1)} />
       </div>
     </>

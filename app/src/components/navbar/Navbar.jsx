@@ -14,8 +14,8 @@ const navItems = [
     path: '/movies',
   },
   {
-    name: 'Search',
-    path: '/search',
+    name: 'Genres',
+    path: '/genres',
   },
 ]
 
@@ -46,7 +46,12 @@ function Navbar() {
         </div>
         <ul>
           {navItems.map(({ name, path }, i) => (
-            <li key={i} className={path === pathname ? 'active' : ''}>
+            <li
+              key={i}
+              className={
+                pathname.split('/')[1] === path.split('/')[1] ? 'active' : ''
+              }
+            >
               <Link to={path}>{name}</Link>
             </li>
           ))}

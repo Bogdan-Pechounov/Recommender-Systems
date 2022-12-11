@@ -47,13 +47,14 @@ function MovieCard({ movie }) {
           ></i>
         </div>
       )}
-
-      <h3 style={{ textAlign: 'center' }}>{movie.title}</h3>
-      {movie.similarity && (
-        <p>
-          <i>Similarity:</i> {movie.similarity.toFixed(4)}
-        </p>
-      )}
+      <div className='movie-card-info'>
+        <h3>{movie.title}</h3>
+        {movie.similarity && (
+          <p>
+            <i>Similarity:</i> {movie.similarity.toFixed(4)}
+          </p>
+        )}
+      </div>
     </Link>
   )
 }
