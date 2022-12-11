@@ -1,5 +1,7 @@
 Visualizing Matrix Factorization on the [MovieLens dataset](https://grouplens.org/datasets/movielens/latest/).
 
+[Demo](https://movie-recommender-app.onrender.com/) deployed on [Render](https://render.com/) and [MongoDB Atlas](https://www.mongodb.com/atlas/database).
+
 |        Home Page         |        Movie Page         |
 | :----------------------: | :-----------------------: |
 | ![](screenshot_home.png) | ![](screenshot_movie.png) |
