@@ -13,9 +13,9 @@ const api = {
     if (!imgPath) return '/no-image-icon.png'
     return `https://image.tmdb.org/t/p/original${imgPath}`
   },
-  async getMovies(limit, page, sort = '') {
+  async getMovies(limit, page, sort = '', search = '') {
     const { data } = await axiosClient.get(
-      `/movies/?limit=${limit}&page=${page}&sort=${sort}`
+      `/movies/?limit=${limit}&page=${page}&sort=${sort}&search=${search}`
     )
     return data
   },

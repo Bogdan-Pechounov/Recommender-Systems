@@ -1,6 +1,7 @@
 import { OutlineButton } from 'components/button/Button'
+import Input from 'components/input/Input'
 import MovieCard from 'components/movie-card/MovieCard'
-import React from 'react'
+import React, { useState } from 'react'
 
 import './movie-grid.scss'
 

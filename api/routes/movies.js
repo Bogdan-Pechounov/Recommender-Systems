@@ -3,7 +3,7 @@ const Movie = require('../models/movie')
 
 const router = Router()
 
-function mapToSortQuery(sort) {
+function mapToSortQuery(sort, search) {
   if (sort == 'recent') {
     return { release_date: -1 }
   } else if (sort == 'popular') {
@@ -14,6 +14,10 @@ function mapToSortQuery(sort) {
     return { rating_avg: -1 }
   } else if (sort == 'trending') {
     return { trend_score: -1 }
+  } else if (search) {
+    return {
+      score: { $meta: 'textScore' },
+    }
   } else {
     return { _id: 1 } //sort by id by default
   }
@@ -21,11 +25,14 @@ function mapToSortQuery(sort) {
 
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, sort } = req.query //paginated
-    const movies = await Movie.find()
+    const { page = 1, limit = 10, sort, search } = req.query //paginated
+    console.log(sort, search)
+    const movies = await Movie.find(
+      search ? { $text: { $search: search } } : {}
+    )
       .limit(limit)
       .skip((page - 1) * limit)
-      .sort(mapToSortQuery(sort))
+      .sort(mapToSortQuery(sort, search))
       .exec()
     res.send(movies)
   } catch (err) {
