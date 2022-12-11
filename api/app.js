@@ -10,11 +10,20 @@ const DB_URI = 'mongodb://127.0.0.1:27017/movies'
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`)
+  console.log(process.env.RENDER)
+  console.log(process.env)
 })
+app.get('/', (_, res) => res.send('Hello there!'))
 
-mongoose.connect(DB_URI).then(() => {
-  console.log('Connected to database:', DB_URI)
-})
+mongoose
+  .connect(DB_URI)
+  .then(() => {
+    console.log('Connected to database:', DB_URI)
+  })
+  .catch((err) => {
+    console.log("Can't connect to database")
+    console.log(err)
+  })
 
 //Middleware
 //TODO exclude POST PUT in production
