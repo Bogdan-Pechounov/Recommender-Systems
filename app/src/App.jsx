@@ -19,6 +19,8 @@ const Wrapper = ({ children }) => {
 }
 
 function App() {
+  console.log(process.env)
+
   return (
     <BrowserRouter>
       <Wrapper>
