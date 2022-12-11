@@ -1,11 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
 from model import Model
+import os
 
 app = Flask(__name__)
 
 model = Model('model-10-20-0.537.hdf5')
 cors = CORS(app, resources={r"*": {"origins": "http://localhost:3000"}})
+
+for i in os.environ.items():
+    print(i)
 
 
 @app.route("/movie/<int:movie_id>")
