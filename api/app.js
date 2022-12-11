@@ -20,8 +20,7 @@ mongoose
     console.log('Connected to database:', DB_URI)
   })
   .catch((err) => {
-    console.log("Can't connect to database:", DB_URI)
-    console.log(err)
+    console.log(err.message)
   })
 
 //Middleware
@@ -31,6 +30,3 @@ app.use(cors({ origin }))
 //Routes
 app.use('/movies', require('./routes/movies'))
 app.use('/ratings', require('./routes/ratings'))
-app.get('/test/:id', (req, res) => {
-  res.send(req.params)
-})
