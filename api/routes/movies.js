@@ -15,28 +15,45 @@ function mapToSortQuery(sort, search) {
   } else if (sort == 'trending') {
     return { trend_score: -1 }
   } else if (search) {
+    //sort by relevance
     return {
       score: { $meta: 'textScore' },
     }
-  } else {
-    return { _id: 1 } //sort by id by default
   }
+  // } else {
+  //   return { _id: 1 } //sort by id by default
+  // }
 }
 
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, sort, search } = req.query //paginated
-    const movies = await Movie.find(
-      search ? { $text: { $search: search } } : {}
-    )
-      .limit(limit)
-      .skip((page - 1) * limit)
-      .sort(mapToSortQuery(sort, search))
-      .exec()
-    res.send(movies)
+    //use atlas search
+    if (search && process.env.NODE_ENV === 'production') {
+      const movies = await Movie.aggregate()
+        .search({
+          text: {
+            query: search,
+            path: 'title',
+            fuzzy: {},
+          },
+        })
+        .skip((page - 1) * limit)
+        .limit(parseInt(limit))
+      res.send(movies)
+    } else {
+      const movies = await Movie.find(
+        search ? { $text: { $search: search } } : {}
+      )
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .sort(mapToSortQuery(sort, search))
+        .exec()
+      res.send(movies)
+    }
   } catch (err) {
     console.log(err)
-    res.status(400).send(err)
+    res.status(500).send(err)
   }
 })
 
@@ -46,7 +63,7 @@ router.get('/:id', async (req, res) => {
     const movie = await Movie.findById(id)
     res.send(movie)
   } catch (err) {
-    res.status(400).send(err)
+    res.status(500).send(err)
   }
 })
 
@@ -59,7 +76,7 @@ if (!process.env.RENDER) {
       res.send(movie)
     } catch (err) {
       console.log(err)
-      res.status(400).send(err)
+      res.status(500).send(err)
     }
   })
 
