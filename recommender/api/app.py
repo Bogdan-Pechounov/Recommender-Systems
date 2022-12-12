@@ -13,7 +13,14 @@ try:
     origin = os.environ['ORIGIN']
 except:
     origin = "http://localhost:3000"
+print(origin)
+print(type(origin))
 cors = CORS(app, resources={r"*": {"origins": origin}})
+
+
+@app.route('/')
+def hello():
+    return 'Hello there!'
 
 
 @app.route("/movie/<int:movie_id>")
