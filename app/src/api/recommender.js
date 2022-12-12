@@ -1,7 +1,13 @@
 import axios from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL:
+    process.env.NODE_ENV === 'production'
+      ? 'https://movie-recommender-ml.onrender.com/'
+      : 'http://localhost:5000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 })
 
 const recommender = {
