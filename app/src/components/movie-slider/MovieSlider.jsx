@@ -8,6 +8,7 @@ import ReactLoading from 'react-loading'
 import './movie-slider.scss'
 import Button, { OutlineButton } from 'components/button/Button'
 import api from 'api/api'
+import { ModalContext } from 'components/modal/ModalContext'
 
 function MovieSlider() {
   const [movies, setMovies] = useState()
@@ -24,7 +25,7 @@ function MovieSlider() {
           grabCursor={true}
           spaceBetween={0}
           slidesPerView={1}
-          autoplay={{ delay: 3000 }}
+          autoplay={{ delay: 3800 }}
         >
           {movies.map((movie, i) => (
             <SwiperSlide key={i}>
@@ -50,6 +51,26 @@ function MovieSlider() {
 
 function MovieSliderItem({ movie, isActive }) {
   const navigate = useNavigate()
+  let { toggle, setContent } = React.useContext(ModalContext)
+
+  //trailer modal
+  function handleClick() {
+    toggle()
+    if (movie.trailers) {
+      const trailer = movie.trailers[0]
+      setContent(
+        <>
+          <p>{trailer.name}</p>
+          <iframe
+            width='100%'
+            height='500px'
+            title='trailer'
+            src={`https://www.youtube.com/embed/${trailer.key}`}
+          ></iframe>
+        </>
+      )
+    }
+  }
 
   return (
     <div
@@ -66,7 +87,7 @@ function MovieSliderItem({ movie, isActive }) {
             <Button onClick={() => navigate('/movie/' + movie._id)}>
               Watch now
             </Button>
-            <OutlineButton>Watch trailer</OutlineButton>
+            <OutlineButton onClick={handleClick}>Watch trailer</OutlineButton>
           </div>
         </div>
         <div className='poster'>

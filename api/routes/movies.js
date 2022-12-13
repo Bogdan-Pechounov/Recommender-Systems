@@ -111,9 +111,14 @@ if (!process.env.RENDER) {
 
   //used to update details after creation
   router.put('/:id', async (req, res) => {
-    const { id } = req.params
-    const msg = await Movie.updateOne({ _id: id }, req.body)
-    res.send(msg)
+    try {
+      const { id } = req.params
+      const msg = await Movie.updateOne({ _id: id }, req.body)
+      res.send(msg)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send(err)
+    }
   })
 }
 

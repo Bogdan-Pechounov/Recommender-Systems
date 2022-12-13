@@ -9,6 +9,7 @@ import Footer from 'components/footer/Footer'
 import Movie from 'pages/movie/Movie'
 import Catalog from 'pages/Catalog'
 import { useLayoutEffect } from 'react'
+import { ModalProvider } from 'components/modal/ModalContext'
 
 const Wrapper = ({ children }) => {
   const location = useLocation()
@@ -19,19 +20,19 @@ const Wrapper = ({ children }) => {
 }
 
 function App() {
-  console.log(process.env)
-
   return (
     <BrowserRouter>
       <Wrapper>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/movie/:id' element={<Movie />} />
-          <Route path='/movies/' element={<Catalog />} />
-          <Route path='/movies/:sort' element={<Catalog />} />
-        </Routes>
-        <Footer />
+        <ModalProvider>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/movie/:id' element={<Movie />} />
+            <Route path='/movies/' element={<Catalog />} />
+            <Route path='/movies/:sort' element={<Catalog />} />
+          </Routes>
+          <Footer />
+        </ModalProvider>
       </Wrapper>
     </BrowserRouter>
   )
