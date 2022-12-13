@@ -9,6 +9,7 @@ const movie = new Schema({
   poster_path: String,
   release_date: String,
   overview: String,
+  trailers: [],
   // precomputed
   rating_count: { type: Number, default: 0 },
   rating_total: { type: Number, default: 0 },

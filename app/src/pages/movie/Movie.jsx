@@ -6,10 +6,13 @@ import { Link, useParams } from 'react-router-dom'
 import ReactLoading from 'react-loading'
 
 import './movie.scss'
+import Button, { OutlineButton } from 'components/button/Button'
+import { ModalContext } from 'components/modal/ModalContext'
 
 //TODO average rating, rating graph, similarity graph (0.9-0.8, 0.8-0.7, ...)
 //TODO latent features, sort by latent feature page, bias (and how it correlates with avg rating)
 //TODO model selector
+
 const numRowItems = 10
 
 function Movie() {
@@ -36,6 +39,7 @@ function Movie() {
     initDissimilarMovies()
   }, [movieIds])
 
+  //#region Helper methods to append and set movies
   async function getSimilarMovies(start) {
     const newMovieIds = movieIds.slice(start, start + numRowItems)
     const movies = await api.populate(newMovieIds)
@@ -71,6 +75,7 @@ function Movie() {
       ...(await getDissimilarMovies(dissimilarMovies.length)),
     ])
   }
+  //#endregion
 
   if (movie) {
     return (
@@ -100,7 +105,6 @@ function Movie() {
               ))}
             </div>
             <p>{movie.release_date}</p>
-
             <p>
               <span style={{ fontWeight: 'bolder' }}>
                 {movie.rating_avg.toFixed(3)}
@@ -108,6 +112,8 @@ function Movie() {
               /5 ({movie.rating_count})
             </p>
             <p>{movie.overview}</p>
+            <Trailer movie={movie} />
+
             <p>Bias: {bias?.toFixed(4)}</p>
             <p>
               Latent features: [
@@ -153,6 +159,38 @@ function Movie() {
       />
     )
   }
+}
+
+function Trailer({ movie }) {
+  let { toggle, setContent } = React.useContext(ModalContext)
+
+  //trailer modal
+  function handleClick() {
+    toggle()
+    if (movie.trailers) {
+      setContent(
+        <div style={{ overflowY: 'auto', height: '600px' }}>
+          {movie.trailers.map((trailer) => (
+            <div key={trailer.key}>
+              <h1>{trailer.name}</h1>
+              <iframe
+                width='100%'
+                height='500px'
+                title='trailer'
+                src={`https://www.youtube.com/embed/${trailer.key}`}
+                style={{ marginBottom: '10px' }}
+              ></iframe>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  }
+  return (
+    movie.trailers?.length > 0 && (
+      <Button onClick={handleClick}>Watch trailer</Button>
+    )
+  )
 }
 
 export default Movie
