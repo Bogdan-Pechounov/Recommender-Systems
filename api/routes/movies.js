@@ -25,23 +25,52 @@ function mapToSortQuery(sort, search) {
   // }
 }
 
+function mapToSearchQuery(search, sort) {
+  if (!sort) {
+    return {
+      text: {
+        query: search,
+        path: 'title',
+        fuzzy: { maxEdits: 2 },
+      },
+    }
+  } else {
+    const mappings = {
+      recent: 'release_date',
+      popular: 'rating_total',
+      best: 'votes',
+      top: 'rating_avg',
+      trending: 'trend_score',
+    }
+    return {
+      //boost score based on sort
+      text: {
+        query: search,
+        path: 'title',
+        fuzzy: { maxEdits: 1 },
+        score: {
+          boost: {
+            path: mappings[sort],
+          },
+        },
+      },
+    }
+  }
+}
+
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, sort, search } = req.query //paginated
     //use atlas search
-    if (search && process.env.NODE_ENV === 'production') {
-      const movies = await Movie.aggregate()
-        .search({
-          text: {
-            query: search,
-            path: 'title',
-            fuzzy: {},
-          },
-        })
+    if (search && process.env.NODE_ENV !== 'production') {
+      let pipeline = Movie.aggregate()
+        .search(mapToSearchQuery(search, sort))
         .skip((page - 1) * limit)
         .limit(parseInt(limit))
+      const movies = await pipeline
       res.send(movies)
     } else {
+      //use simple text search
       const movies = await Movie.find(
         search ? { $text: { $search: search } } : {}
       )
