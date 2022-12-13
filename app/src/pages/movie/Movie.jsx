@@ -22,14 +22,14 @@ function Movie() {
   const [movieIds, setMovieIds] = useState([])
   const [similarMovies, setSimilarMovies] = useState([])
   const [dissimilarMovies, setDissimilarMovies] = useState([])
-  const [similarEnd, setSimilarEnd] = useState(0)
-  const [dissimilarEnd, setDissimilarEnd] = useState(0)
+  //const [similarEnd, setSimilarEnd] = useState(0)
+  //const [dissimilarEnd, setDissimilarEnd] = useState(0)
 
   useEffect(() => {
-    api.getMovie(id).then((movie) => setMovie(movie))
-    recommender.similarMovies(id).then((movieIds) => setMovieIds(movieIds))
-    recommender.latentFeatures(id).then((features) => setFeatures(features))
-    recommender.bias(id).then((bias) => setBias(bias))
+    api.getMovie(id).then(setMovie)
+    recommender.similarMovies(id).then(setMovieIds)
+    recommender.latentFeatures(id).then(setFeatures)
+    recommender.bias(id).then(setBias)
   }, [id])
 
   //Find movie details one by one
@@ -37,19 +37,6 @@ function Movie() {
     getSimilarMovies().then(setSimilarMovies)
     getDissimilarMovies().then(setDissimilarMovies)
   }, [movieIds])
-
-  //load more movies dynamically
-  useEffect(() => {
-    getSimilarMovies().then((movies) =>
-      setSimilarMovies([...similarMovies, ...movies])
-    )
-  }, [similarEnd])
-
-  useEffect(() => {
-    getDissimilarMovies().then((movies) =>
-      setDissimilarMovies([...dissimilarMovies, ...movies])
-    )
-  }, [dissimilarEnd])
 
   async function getSimilarMovies() {
     const newMovieIds = movieIds.slice(
@@ -129,14 +116,23 @@ function Movie() {
           title='Similar Movies'
           movies={similarMovies}
           onReachEnd={() => {
-            setSimilarEnd(similarMovies.length) //in case reach event is triggered many times
+            //load more movies dynamically
+            if (similarMovies.length > 0) {
+              getSimilarMovies().then((movies) =>
+                setSimilarMovies([...similarMovies, ...movies])
+              )
+            }
           }}
         />
         <MovieRow
           title='Dissimilar Movies'
           movies={dissimilarMovies}
           onReachEnd={() => {
-            setDissimilarEnd(dissimilarMovies.length)
+            if (dissimilarMovies.length > 0) {
+              getDissimilarMovies().then((movies) =>
+                setDissimilarMovies([...dissimilarMovies, ...movies])
+              )
+            }
           }}
         />
       </div>

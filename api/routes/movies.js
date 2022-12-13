@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, sort, search } = req.query //paginated
     //use atlas search
-    if (search && process.env.NODE_ENV !== 'production') {
+    if (search && process.env.NODE_ENV === 'production') {
       let pipeline = Movie.aggregate()
         .search(mapToSearchQuery(search, sort))
         .skip((page - 1) * limit)
