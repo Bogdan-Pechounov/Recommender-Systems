@@ -22,8 +22,6 @@ function Movie() {
   const [movieIds, setMovieIds] = useState([])
   const [similarMovies, setSimilarMovies] = useState([])
   const [dissimilarMovies, setDissimilarMovies] = useState([])
-  //const [similarEnd, setSimilarEnd] = useState(0)
-  //const [dissimilarEnd, setDissimilarEnd] = useState(0)
 
   useEffect(() => {
     api.getMovie(id).then(setMovie)
@@ -34,28 +32,44 @@ function Movie() {
 
   //Find movie details one by one
   useEffect(() => {
-    getSimilarMovies().then(setSimilarMovies)
-    getDissimilarMovies().then(setDissimilarMovies)
+    initSimilarMovies()
+    initDissimilarMovies()
   }, [movieIds])
 
-  async function getSimilarMovies() {
-    const newMovieIds = movieIds.slice(
-      similarMovies.length,
-      similarMovies.length + numRowItems
-    )
+  async function getSimilarMovies(start) {
+    const newMovieIds = movieIds.slice(start, start + numRowItems)
     const movies = await api.populate(newMovieIds)
     return movies
   }
 
-  async function getDissimilarMovies() {
+  async function getDissimilarMovies(start) {
     const newMovieIds = movieIds
-      .slice(
-        movieIds.length - dissimilarMovies.length - numRowItems,
-        movieIds.length - dissimilarMovies.length
-      )
+      .slice(movieIds.length - start - numRowItems, movieIds.length - start)
       .reverse()
     const movies = await api.populate(newMovieIds)
     return movies
+  }
+
+  async function initSimilarMovies() {
+    setSimilarMovies(await getSimilarMovies(0))
+  }
+
+  async function initDissimilarMovies() {
+    setDissimilarMovies(await getDissimilarMovies(0))
+  }
+
+  async function appendSimilarMovies() {
+    setSimilarMovies([
+      ...similarMovies,
+      ...(await getSimilarMovies(similarMovies.length)),
+    ])
+  }
+
+  async function appendDissimilarMovies() {
+    setDissimilarMovies([
+      ...dissimilarMovies,
+      ...(await getDissimilarMovies(dissimilarMovies.length)),
+    ])
   }
 
   if (movie) {
@@ -117,22 +131,14 @@ function Movie() {
           movies={similarMovies}
           onReachEnd={() => {
             //load more movies dynamically
-            if (similarMovies.length > 0) {
-              getSimilarMovies().then((movies) =>
-                setSimilarMovies([...similarMovies, ...movies])
-              )
-            }
+            appendSimilarMovies()
           }}
         />
         <MovieRow
           title='Dissimilar Movies'
           movies={dissimilarMovies}
           onReachEnd={() => {
-            if (dissimilarMovies.length > 0) {
-              getDissimilarMovies().then((movies) =>
-                setDissimilarMovies([...dissimilarMovies, ...movies])
-              )
-            }
+            appendDissimilarMovies()
           }}
         />
       </div>
