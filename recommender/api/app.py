@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from model import Model
 import os
@@ -23,6 +23,7 @@ def hello():
     return 'Hello there!'
 
 
+# movie routes
 @app.route("/movie/<int:movie_id>")
 def movie(movie_id):
     print(movie_id)
@@ -43,3 +44,20 @@ def latent_features(movie_id):
 @app.route('/bias/<int:movie_id>')
 def bias(movie_id):
     return str(model.bias(movie_id))
+
+
+# sort
+@app.route('/sort/<int:latent_feature>')
+def sortByLatentFeature(latent_feature):
+    page = request.args.get("page", default=1, type=int)
+    limit = request.args.get("limit", default=10, type=int)
+    start = (page - 1) * limit
+    end = start + limit
+    return model.sortByColumn(latent_feature)[start:end]
+
+# info
+
+
+@app.route('/info')
+def info():
+    return {'numMovies': len(model.embeddings)}

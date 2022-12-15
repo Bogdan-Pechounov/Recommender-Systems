@@ -14,7 +14,7 @@ function MovieSlider() {
   const [movies, setMovies] = useState()
 
   useEffect(() => {
-    api.getMovies(3, 1).then((movies) => setMovies(movies))
+    api.getPromotedMovies().then(setMovies)
   }, [])
 
   if (movies) {
@@ -87,7 +87,9 @@ function MovieSliderItem({ movie, isActive }) {
             <Button onClick={() => navigate('/movie/' + movie._id)}>
               Watch now
             </Button>
-            <OutlineButton onClick={handleClick}>Watch trailer</OutlineButton>
+            {movie.trailers?.length > 0 && (
+              <OutlineButton onClick={handleClick}>Watch trailer</OutlineButton>
+            )}
           </div>
         </div>
         <div className='poster'>

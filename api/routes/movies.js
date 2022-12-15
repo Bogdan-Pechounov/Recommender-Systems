@@ -86,6 +86,19 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/promoted', async (_, res) => {
+  try {
+    const movies = await Movie.find({
+      _id: {
+        $in: [1, 2, 3],
+      },
+    })
+    res.send(movies)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params

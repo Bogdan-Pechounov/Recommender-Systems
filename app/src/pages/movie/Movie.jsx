@@ -8,6 +8,7 @@ import ReactLoading from 'react-loading'
 import './movie.scss'
 import Button, { OutlineButton } from 'components/button/Button'
 import { ModalContext } from 'components/modal/ModalContext'
+import Genres from 'components/genres/Genres'
 
 //TODO average rating, rating graph, similarity graph (0.9-0.8, 0.8-0.7, ...)
 //TODO latent features, sort by latent feature page, bias (and how it correlates with avg rating)
@@ -92,18 +93,7 @@ function Movie() {
           </div>
           <div className='info'>
             <div className='title'>{movie.title}</div>
-            <div className='genres'>
-              {movie.genres.map((genre, i) => (
-                <Link
-                  key={i}
-                  to={`/genres/${genre.toLowerCase()}`}
-                  className='genre'
-                  onClick={() => setMovie(null)}
-                >
-                  {genre}
-                </Link>
-              ))}
-            </div>
+            <Genres movie={movie} />
             <p>{movie.release_date}</p>
             <p>
               <span style={{ fontWeight: 'bolder' }}>
@@ -113,7 +103,7 @@ function Movie() {
             </p>
             <p>{movie.overview}</p>
             <Trailer movie={movie} />
-
+            {/* model */}
             <p>Bias: {bias?.toFixed(4)}</p>
             <p>
               Latent features: [

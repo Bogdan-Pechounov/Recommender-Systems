@@ -17,6 +17,10 @@ const navItems = [
     name: 'Genres',
     path: '/genres',
   },
+  {
+    name: 'Features',
+    path: '/features',
+  },
 ]
 
 function Navbar() {
@@ -40,10 +44,10 @@ function Navbar() {
   return (
     <div ref={navbarRef} className='navbar'>
       <div className='container'>
-        <div className='logo'>
+        <Link to='/' className='logo'>
           <img src={logo} alt='logo' />
-          <Link to='/'>Netflik</Link>
-        </div>
+          <div>Netflik</div>
+        </Link>
         <ul>
           {navItems.map(({ name, path }, i) => (
             <li

@@ -25,6 +25,10 @@ const api = {
     )
     return data
   },
+  async getPromotedMovies() {
+    const { data } = await axiosClient.get('/movies/promoted')
+    return data
+  },
   async getMovie(id) {
     const { data } = await axiosClient.get(`/movies/${id}`)
     return data

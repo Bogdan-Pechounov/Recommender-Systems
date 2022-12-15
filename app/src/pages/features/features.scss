@@ -1,0 +1,52 @@
+@use '../../scss/' as *;
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+  padding: 10px;
+  align-items: flex-start;
+
+  .genres {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .card {
+    display: flex;
+    gap: 10px;
+    padding: 1rem;
+    box-shadow: 0 1px 10px 1px rgba(white, 0.3);
+    border-radius: $border-radius;
+
+    .poster {
+      flex: 1;
+
+      img {
+        border-radius: $border-radius;
+        display: block; //fix extra bottom space
+        transition: transform 0.3s ease;
+      }
+    }
+    .content {
+      flex: 3;
+      padding: 10px;
+      color: white;
+    }
+
+    &:hover {
+      box-shadow: 1px 1px 30px 1px $main-color;
+      img {
+        transform: scale(1.04);
+      }
+    }
+
+    .selected {
+      font-weight: bolder;
+    }
+
+    .not-selected {
+      font-size: large;
+    }
+  }
+}

@@ -23,6 +23,16 @@ const recommender = {
     const { data } = await axiosClient.get(`/bias/${movieId}`)
     return data
   },
+  async sortByFeature(index, page, limit) {
+    const { data } = await axiosClient.get(
+      `/sort/${index}?page=${page}&limit=${limit}`
+    )
+    return data
+  },
+  async info() {
+    const { data } = await axiosClient.get('/info')
+    return data
+  },
 }
 
 export default recommender

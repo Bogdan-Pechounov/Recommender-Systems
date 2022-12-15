@@ -7,8 +7,8 @@ import './modal.scss'
 const Modal = () => {
   let { active, content, toggle } = React.useContext(ModalContext)
   return ReactDOM.createPortal(
-    <div className={`modal ${active ? 'active' : ''}`}>
-      <div className='content'>
+    <div className={`modal ${active ? 'active' : ''}`} onClick={toggle}>
+      <div className='content' onClick={(e) => e.stopPropagation()}>
         {content}
         <div className='close' onClick={toggle}>
           <i className='bx bx-x'></i>
