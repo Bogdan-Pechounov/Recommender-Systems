@@ -7,7 +7,7 @@ function Genres({ movie }) {
   return (
     <div className='genres'>
       {movie.genres.map((genre, i) => (
-        <Link key={i} to={`/genres/${genre.toLowerCase()}`} className='genre'>
+        <Link key={i} to={`/movies/?genres=${genre}`} className='genre'>
           {genre}
         </Link>
       ))}

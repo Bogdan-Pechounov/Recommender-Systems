@@ -1,12 +1,13 @@
 from flask import Flask, request
 from flask_cors import CORS
 from model import Model
+import json
 import os
 
 app = Flask(__name__)
 
 # load model
-model = Model('model-10-20-0.537.hdf5')
+model = Model('models/model-10-20-0.537.hdf5')
 
 # cors
 try:
@@ -55,9 +56,15 @@ def sortByLatentFeature(latent_feature):
     end = start + limit
     return model.sortByColumn(latent_feature)[start:end]
 
+
 # info
-
-
 @app.route('/info')
 def info():
     return {'numMovies': len(model.embeddings)}
+
+
+@app.route('/info/genres')
+def genres_info():
+    with open('info/genres.json') as f:
+        genres = json.load(f)
+    return genres

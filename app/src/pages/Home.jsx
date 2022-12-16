@@ -23,12 +23,16 @@ function Home() {
       <MovieRow
         title='Trending'
         movies={trendingMovies}
-        to='/movies/trending'
+        to='/movies?sort=trending'
       />
-      <MovieRow title='Popular' movies={popularMovies} to='/movies/popular' />
-      <MovieRow title='Best' movies={bestMovies} to='/movies/best' />
-      <MovieRow title='Top Rated' movies={topMovies} to='/movies/top' />
-      <MovieRow title='Recent' movies={recentMovies} to='/movies/recent' />
+      <MovieRow
+        title='Popular'
+        movies={popularMovies}
+        to='/movies?sort=popular'
+      />
+      <MovieRow title='Best' movies={bestMovies} to='/movies?sort=best' />
+      <MovieRow title='Top Rated' movies={topMovies} to='/movies?sort=top' />
+      <MovieRow title='Recent' movies={recentMovies} to='/movies?sort=recent' />
     </>
   )
 }

@@ -33,6 +33,10 @@ const recommender = {
     const { data } = await axiosClient.get('/info')
     return data
   },
+  async genresInfo() {
+    const { data } = await axiosClient.get('/info/genres')
+    return data
+  },
 }
 
 export default recommender

@@ -11,6 +11,7 @@ import Catalog from 'pages/Catalog'
 import { useLayoutEffect } from 'react'
 import { ModalProvider } from 'components/modal/ModalContext'
 import Features from 'pages/features/Features'
+import GenresPage from 'pages/genres/GenresPage'
 
 const Wrapper = ({ children }) => {
   const location = useLocation()
@@ -30,7 +31,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/movie/:id' element={<Movie />} />
             <Route path='/movies/' element={<Catalog />} />
-            <Route path='/movies/:sort' element={<Catalog />} />
+            <Route path='/genres' element={<GenresPage />} />
             <Route path='/features/:index' element={<Features />} />
           </Routes>
           <Footer />
