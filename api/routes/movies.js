@@ -65,8 +65,8 @@ router.get('/', async (req, res) => {
     //use atlas search
     if (search && process.env.NODE_ENV === 'production') {
       let pipeline = Movie.aggregate()
-        .match(genres ? { genres: { $all: genres.split('|') } } : {})
         .search(mapToSearchQuery(search, sort))
+        .match(genres ? { genres: { $all: genres.split('|') } } : {})
         .skip((page - 1) * limit)
         .limit(parseInt(limit))
       const movies = await pipeline
