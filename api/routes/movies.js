@@ -4,13 +4,14 @@ const Movie = require('../models/movie')
 const router = Router()
 
 function mapToSortQuery(sort, search) {
+  sort = sort.toLowerCase()
   if (sort == 'recent') {
     return { release_date: -1 }
   } else if (sort == 'popular') {
     return { rating_total: -1 }
   } else if (sort == 'best') {
     return { votes: -1 }
-  } else if (sort == 'top') {
+  } else if (sort == 'top rated') {
     return { rating_avg: -1 }
   } else if (sort == 'trending') {
     return { trend_score: -1 }
@@ -60,10 +61,11 @@ function mapToSearchQuery(search, sort) {
 
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, sort, search } = req.query //paginated
+    const { page = 1, limit = 10, sort, search, genres } = req.query //paginated
     //use atlas search
     if (search && process.env.NODE_ENV === 'production') {
       let pipeline = Movie.aggregate()
+        .match(genres ? { genres: { $all: genres.split('|') } } : {})
         .search(mapToSearchQuery(search, sort))
         .skip((page - 1) * limit)
         .limit(parseInt(limit))
@@ -74,6 +76,7 @@ router.get('/', async (req, res) => {
       const movies = await Movie.find(
         search ? { $text: { $search: search } } : {}
       )
+        .find(genres ? { genres: { $all: genres.split('|') } } : {})
         .limit(limit)
         .skip((page - 1) * limit)
         .sort(mapToSortQuery(sort, search))
@@ -82,6 +85,19 @@ router.get('/', async (req, res) => {
     }
   } catch (err) {
     console.log(err)
+    res.status(500).send(err)
+  }
+})
+
+router.get('/promoted', async (_, res) => {
+  try {
+    const movies = await Movie.find({
+      _id: {
+        $in: [1, 2, 3],
+      },
+    })
+    res.send(movies)
+  } catch (err) {
     res.status(500).send(err)
   }
 })

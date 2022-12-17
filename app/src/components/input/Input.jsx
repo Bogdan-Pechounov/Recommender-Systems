@@ -1,6 +1,7 @@
 import React from 'react'
 
 import './input.scss'
+
 function Input({ type, placeholder, value, onChange }) {
   return (
     <input

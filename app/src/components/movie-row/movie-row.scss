@@ -1,9 +1,6 @@
 @use '../../scss/' as *;
 
 .movie-row {
-  // max-width: 1660px;
-  // margin: auto;
-
   .header {
     @include flex(center, space-between);
   }

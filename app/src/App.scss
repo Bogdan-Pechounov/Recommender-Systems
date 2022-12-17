@@ -19,7 +19,7 @@ html {
 
 body {
   font-family: $font-family;
-  font-size: x- large;
+  font-size: x-large;
   font-weight: 400;
   line-height: 1.5;
 
@@ -70,6 +70,7 @@ iframe {
 .section {
   padding: 0 2rem;
 }
+
 // loading animation
 .loading {
   margin-left: auto;
@@ -83,7 +84,7 @@ iframe {
 
 //scrollbar
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -93,4 +94,14 @@ iframe {
   background-color: rgba(155, 155, 155, 0.5);
   border-radius: 20px;
   border: transparent;
+}
+
+.collapse {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  white-space: nowrap;
+  @include mobile {
+    flex-direction: column;
+  }
 }

@@ -19,10 +19,16 @@ const api = {
     if (!imgPath) return '/no-image-icon.png'
     return `https://image.tmdb.org/t/p/original${imgPath}`
   },
-  async getMovies(limit, page, sort = '', search = '') {
+  async getMovies(limit, page, sort = '', search = '', genres = []) {
     const { data } = await axiosClient.get(
-      `/movies/?limit=${limit}&page=${page}&sort=${sort}&search=${search}`
+      `/movies/?limit=${limit}&page=${page}&sort=${sort}&search=${search}&genres=${genres.join(
+        '|'
+      )}`
     )
+    return data
+  },
+  async getPromotedMovies() {
+    const { data } = await axiosClient.get('/movies/promoted')
     return data
   },
   async getMovie(id) {

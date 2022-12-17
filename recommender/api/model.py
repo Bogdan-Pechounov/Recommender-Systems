@@ -4,6 +4,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 # TODO sort by latent features
+
+
 class Model:
     def __init__(self, model_path):
         self.model = load_model(model_path)
@@ -21,3 +23,7 @@ class Model:
 
     def bias(self, movie):
         return self.model.layers[6].get_weights()[0][movie][0]
+
+    def sortByColumn(self, column):
+        features = self.embeddings.tolist()
+        return sorted([(i, f) for i, f in enumerate(features)], key=lambda x: x[1][column], reverse=True)

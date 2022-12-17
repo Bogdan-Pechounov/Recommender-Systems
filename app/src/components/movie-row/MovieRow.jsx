@@ -7,14 +7,13 @@ import { Keyboard, Mousewheel } from 'swiper'
 
 import './movie-row.scss'
 
-function MovieRow({ title, movies, to, onReachEnd }) {
+function MovieRow({ title, movies, to, onReachEnd, resetDependencies = [] }) {
   const [swiper, setSwiper] = useState()
-  const location = useLocation()
 
   useEffect(() => {
     //Reset on page change
     swiper?.slideTo(0)
-  }, [location])
+  }, resetDependencies)
 
   return (
     <div className='movie-row'>

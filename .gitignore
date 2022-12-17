@@ -3,3 +3,4 @@ node_modules
 __pycache__
 recommender/data/full/*.csv
 recommender/training/matrix_factorization/data/df.pickle
+commands.txt
