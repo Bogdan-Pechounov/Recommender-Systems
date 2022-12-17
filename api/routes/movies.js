@@ -51,7 +51,7 @@ function mapToSearchQuery(search, sort) {
         fuzzy: { maxEdits: 1 },
         score: {
           boost: {
-            path: mappings[sort],
+            path: mappings[sort.toLowerCase()],
           },
         },
       },
