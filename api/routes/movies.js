@@ -40,7 +40,7 @@ function mapToSearchQuery(search, sort) {
       recent: 'release_date',
       popular: 'rating_total',
       best: 'votes',
-      top: 'rating_avg',
+      'top rated': 'rating_avg',
       trending: 'trend_score',
     }
     return {
