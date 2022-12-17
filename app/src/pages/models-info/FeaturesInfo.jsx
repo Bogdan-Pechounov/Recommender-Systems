@@ -77,7 +77,7 @@ const colorArray = [
 ]
 
 export default function FeaturesInfo({ featuresInfo, genresInfo }) {
-  if (!featuresInfo) {
+  if (!featuresInfo || !genresInfo) {
     return
   }
 

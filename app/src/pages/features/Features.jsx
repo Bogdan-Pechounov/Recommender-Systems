@@ -67,7 +67,12 @@ function Features() {
         </OutlineButton>
       </div>
       <Collapse show={showChart}>
-        <div style={{ width: '50%', height: '50%' }}>
+        <div
+          style={{
+            width: '50%',
+            height: '50%',
+          }}
+        >
           {featuresInfo && <FeaturesChart features={featuresInfo[feature]} />}
         </div>
       </Collapse>
