@@ -11,7 +11,7 @@ function mapToSortQuery(sort, search) {
     return { rating_total: -1 }
   } else if (sort == 'best') {
     return { votes: -1 }
-  } else if (sort == 'top') {
+  } else if (sort == 'top rated') {
     return { rating_avg: -1 }
   } else if (sort == 'trending') {
     return { trend_score: -1 }

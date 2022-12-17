@@ -3,7 +3,13 @@ import React, { useState } from 'react'
 
 import './dropdown-menu.scss'
 
-function DropdownMenu({ selected, setSelected, items, title = 'Sort by' }) {
+function DropdownMenu({
+  selected,
+  setSelected,
+  items,
+  title = 'Sort by',
+  displayNames,
+}) {
   const [open, setOpen] = useState(false)
 
   function toggle() {
@@ -14,6 +20,7 @@ function DropdownMenu({ selected, setSelected, items, title = 'Sort by' }) {
     setSelected(item)
     toggle()
   }
+
   return (
     <div className='dropdown'>
       <button className='selector' onClick={toggle}>
@@ -23,7 +30,7 @@ function DropdownMenu({ selected, setSelected, items, title = 'Sort by' }) {
         <ul>
           {items.map((item, i) => (
             <li key={i} className='item' onClick={() => select(item)}>
-              {item}
+              {displayNames ? displayNames[item] : item}
             </li>
           ))}
         </ul>

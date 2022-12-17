@@ -1,13 +1,13 @@
 import api from 'api/api'
 import recommender from 'api/recommender'
 import Genres from 'components/genres/Genres'
-import MovieCard from 'components/movie-card/MovieCard'
 import PageHeader from 'components/page-header/PageHeader'
 import Pagination from 'components/pagination/Pagination'
 import React, { useEffect, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import './features.scss'
+import FeaturesChart from './FeaturesChart'
 
 const pageSize = 20
 //sort movies by their latent features in the matrix factorization model
@@ -17,10 +17,12 @@ function Features() {
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
   const [numMovies, setNumMovies] = useState(1)
+  const [featuresInfo, setFeaturesInfo] = useState()
 
   useEffect(() => {
     recommender.info().then(({ numMovies }) => setNumMovies(numMovies))
     recommender.sortByFeature(index, page, pageSize).then(setMovies)
+    recommender.featuresInfo().then(setFeaturesInfo)
   }, [index, page])
 
   useEffect(() => {
@@ -30,6 +32,7 @@ function Features() {
   return (
     <>
       <PageHeader />
+      {featuresInfo && <FeaturesChart features={featuresInfo[index]} />}
       <div className='cards'>
         {movies.map(([_id, features]) => (
           <MovieItem
@@ -52,12 +55,13 @@ function Features() {
 
 function MovieItem({ _id, features, index }) {
   const [movie, setMovie] = useState()
+  const navigate = useNavigate()
   useEffect(() => {
     api.getMovie(_id).then(setMovie)
   }, [_id])
   if (movie) {
     return (
-      <Link to={`/movie/${_id}`} className='card'>
+      <div onClick={() => navigate(`/movie/${_id}`)} className='card'>
         <div className='poster'>
           <img src={api.originalImage(movie.poster_path)} alt=''></img>
         </div>
@@ -84,7 +88,7 @@ function MovieItem({ _id, features, index }) {
             ]
           </p>
         </div>
-      </Link>
+      </div>
     )
   }
 }

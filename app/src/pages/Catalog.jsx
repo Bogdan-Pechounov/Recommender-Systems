@@ -6,7 +6,7 @@ import MovieGrid from 'components/movie-grid/MovieGrid'
 import PageHeader from 'components/page-header/PageHeader'
 import Search from 'components/search/Search'
 import React, { useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 function Catalog() {
   const [movies, setMovies] = useState([])

@@ -14,8 +14,8 @@ const navItems = [
     path: '/movies',
   },
   {
-    name: 'Genres',
-    path: '/genres',
+    name: 'Models',
+    path: '/models',
   },
   {
     name: 'Features',
@@ -42,7 +42,7 @@ function Navbar() {
   }, [])
 
   return (
-    <div ref={navbarRef} className='navbar'>
+    <nav ref={navbarRef} className='navbar'>
       <div className='container'>
         <Link to='/' className='logo'>
           <img src={logo} alt='logo' />
@@ -61,7 +61,7 @@ function Navbar() {
           ))}
         </ul>
       </div>
-    </div>
+    </nav>
   )
 }
 

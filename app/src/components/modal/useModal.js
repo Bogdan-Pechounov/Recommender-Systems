@@ -6,7 +6,7 @@ function useModal() {
 
   function toggle() {
     setActive(!active)
-    setContent('')
+    setContent('') //to stop video from playing
   }
 
   return { active, content, setContent, toggle }

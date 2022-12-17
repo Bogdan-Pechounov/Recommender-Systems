@@ -11,16 +11,18 @@ const axiosClient = axios.create({
 })
 
 const recommender = {
-  async latentFeatures(movieId) {
-    const { data } = await axiosClient.get(`/latent_features/${movieId}`)
+  async latentFeatures(movieId, model) {
+    const { data } = await axiosClient.get(
+      `/latent_features/${movieId}?model=${model}`
+    )
     return data
   },
-  async similarMovies(movieId) {
-    const { data } = await axiosClient.get(`/similar/${movieId}`)
+  async similarMovies(movieId, model) {
+    const { data } = await axiosClient.get(`/similar/${movieId}?model=${model}`)
     return data
   },
-  async bias(movieId) {
-    const { data } = await axiosClient.get(`/bias/${movieId}`)
+  async bias(movieId, model) {
+    const { data } = await axiosClient.get(`/bias/${movieId}?model=${model}`)
     return data
   },
   async sortByFeature(index, page, limit) {
@@ -33,8 +35,12 @@ const recommender = {
     const { data } = await axiosClient.get('/info')
     return data
   },
-  async genresInfo() {
-    const { data } = await axiosClient.get('/info/genres')
+  async genresInfo(model) {
+    const { data } = await axiosClient.get(`/info/genres?model=${model}`)
+    return data
+  },
+  async featuresInfo(model) {
+    const { data } = await axiosClient.get(`/info/features?model=${model}`)
     return data
   },
 }

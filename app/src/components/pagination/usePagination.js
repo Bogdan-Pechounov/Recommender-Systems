@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+//array with values from start to end
 function range(start, end) {
   const length = end - start + 1
   return Array.from({ length }, (_, i) => i + start)

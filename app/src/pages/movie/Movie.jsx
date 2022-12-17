@@ -9,10 +9,10 @@ import './movie.scss'
 import Button, { OutlineButton } from 'components/button/Button'
 import { ModalContext } from 'components/modal/ModalContext'
 import Genres from 'components/genres/Genres'
+import DropdownMenu from 'components/dropdown-menu/DropdownMenu'
 
 //TODO average rating, rating graph, similarity graph (0.9-0.8, 0.8-0.7, ...)
-//TODO latent features, sort by latent feature page, bias (and how it correlates with avg rating)
-//TODO model selector
+//TODO latent features, bias (and how it correlates with avg rating)
 
 const numRowItems = 10
 
@@ -27,12 +27,14 @@ function Movie() {
   const [similarMovies, setSimilarMovies] = useState([])
   const [dissimilarMovies, setDissimilarMovies] = useState([])
 
+  const [model, setModel] = useState(1)
+
   useEffect(() => {
     api.getMovie(id).then(setMovie)
-    recommender.similarMovies(id).then(setMovieIds)
-    recommender.latentFeatures(id).then(setFeatures)
-    recommender.bias(id).then(setBias)
-  }, [id])
+    recommender.similarMovies(id, model).then(setMovieIds)
+    recommender.latentFeatures(id, model).then(setFeatures)
+    recommender.bias(id, model).then(setBias)
+  }, [id, model])
 
   //Find movie details one by one
   useEffect(() => {
@@ -103,22 +105,36 @@ function Movie() {
             </p>
             <p>{movie.overview}</p>
             <Trailer movie={movie} />
-            {/* model */}
-            <p>Bias: {bias?.toFixed(4)}</p>
-            <p>
-              Latent features: [
-              {features
-                .map((f) => f.toFixed(3))
-                .map((f, i) => (
-                  <span key={i}>
-                    {i > 0 ? ', ' : ''}
-                    <span style={{ color: f > 0 ? 'greenyellow' : 'red' }}>
-                      {f}
-                    </span>
+          </div>
+        </div>
+
+        <div
+          className='section'
+          style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}
+        >
+          <p>Bias: {bias?.toFixed(4)}</p>
+          <p>
+            Latent features: [
+            {features
+              .map((f) => f.toFixed(3))
+              .map((f, i) => (
+                <span key={i}>
+                  {i > 0 ? ', ' : ''}
+                  <span style={{ color: f > 0 ? 'greenyellow' : 'red' }}>
+                    {f}
                   </span>
-                ))}
-              ]
-            </p>
+                </span>
+              ))}
+            ]
+          </p>
+          <div style={{ marginLeft: 'auto' }}>
+            <DropdownMenu
+              selected={model}
+              setSelected={setModel}
+              items={[0, 1, 2]}
+              title='Select model'
+              displayNames={{ 0: 'K=5', 1: 'K=10', 2: 'K=20' }}
+            />
           </div>
         </div>
 
@@ -129,6 +145,7 @@ function Movie() {
             //load more movies dynamically
             appendSimilarMovies()
           }}
+          resetDependencies={[id, model]}
         />
         <MovieRow
           title='Dissimilar Movies'
@@ -136,6 +153,7 @@ function Movie() {
           onReachEnd={() => {
             appendDissimilarMovies()
           }}
+          resetDependencies={[id, model]}
         />
       </div>
     )

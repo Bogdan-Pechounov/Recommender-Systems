@@ -2,6 +2,7 @@ import React from 'react'
 
 import './genres-selector.scss'
 
+//Select many genres to modify GET request
 function GenresSelector({ genres, selected, setSelected }) {
   return (
     <div className='genres-selector'>
