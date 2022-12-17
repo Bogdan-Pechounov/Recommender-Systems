@@ -13,7 +13,7 @@ function Catalog() {
   const [genres, setGenres] = useState({})
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const [sort, setSort] = useState(searchParams.get('sort'))
+  const [sort, setSort] = useState(searchParams.get('sort') || '')
   const [selectedGenres, setSelectedGenres] = useState(
     searchParams.get('genres')?.split('|') || []
   )
