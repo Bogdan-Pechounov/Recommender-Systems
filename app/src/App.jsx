@@ -33,7 +33,7 @@ function App() {
             <Route path='/movie/:id' element={<Movie />} />
             <Route path='/movies/' element={<Catalog />} />
             <Route path='/models' element={<ModelsInfo />} />
-            <Route path='/features/:index' element={<Features />} />
+            <Route path='/features/' element={<Features />} />
           </Routes>
           <Footer />
         </ModalProvider>

@@ -127,7 +127,7 @@ function Movie() {
               ))}
             ]
           </p>
-          <div style={{ marginLeft: 'auto' }}>
+          <div style={{ marginLeft: 'auto', whiteSpace: 'nowrap' }}>
             <DropdownMenu
               selected={model}
               setSelected={setModel}

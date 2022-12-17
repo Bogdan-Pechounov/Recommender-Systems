@@ -64,10 +64,7 @@ function Catalog() {
         />
       </div>
       <div className='section mb-3'>
-        <div
-          className='mb-3'
-          style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}
-        >
+        <div className='collapse mb-3'>
           <Search title={title} setTitle={setTitle} />
           <DropdownMenu
             selected={sort}

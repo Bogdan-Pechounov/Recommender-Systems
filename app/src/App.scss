@@ -95,3 +95,13 @@ iframe {
   border-radius: 20px;
   border: transparent;
 }
+
+.collapse {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  white-space: nowrap;
+  @include mobile {
+    flex-direction: column;
+  }
+}

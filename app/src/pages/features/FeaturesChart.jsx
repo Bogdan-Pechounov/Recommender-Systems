@@ -26,8 +26,7 @@ export default function FeaturesChart({ features }) {
     responsive: true,
     plugins: {
       title: {
-        display: true,
-        text: 'Chart.js Radar Chart',
+        display: false,
       },
       legend: {
         display: false,
@@ -36,22 +35,18 @@ export default function FeaturesChart({ features }) {
   }
 
   return (
-    <>
-      <div style={{ width: '530px', height: '530px' }}>
-        <Radar
-          options={options}
-          data={{
-            labels: Object.keys(features),
-            datasets: [
-              {
-                data: Object.values(features),
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              },
-            ],
-          }}
-        />
-      </div>
-    </>
+    <Radar
+      options={options}
+      data={{
+        labels: Object.keys(features),
+        datasets: [
+          {
+            data: Object.values(features),
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          },
+        ],
+      }}
+    />
   )
 }

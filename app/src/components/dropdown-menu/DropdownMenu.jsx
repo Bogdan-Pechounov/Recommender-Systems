@@ -1,5 +1,5 @@
 import Button from 'components/button/Button'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import './dropdown-menu.scss'
 
@@ -11,9 +11,21 @@ function DropdownMenu({
   displayNames,
 }) {
   const [open, setOpen] = useState(false)
+  const ref = useRef()
+
+  //close when click outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!ref.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [ref])
 
   function toggle() {
-    setOpen(!open)
+    setOpen((open) => !open)
   }
 
   function select(item) {
@@ -22,7 +34,7 @@ function DropdownMenu({
   }
 
   return (
-    <div className='dropdown'>
+    <div ref={ref} className='dropdown'>
       <button className='selector' onClick={toggle}>
         {title} <i className='bx bx-chevron-down'></i>
       </button>
