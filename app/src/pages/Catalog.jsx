@@ -64,7 +64,7 @@ function Catalog() {
         />
       </div>
       <div className='section mb-3'>
-        <div className='collapse mb-3'>
+        <div className='mb-column mb-3'>
           <Search title={title} setTitle={setTitle} />
           <DropdownMenu
             selected={sort}
