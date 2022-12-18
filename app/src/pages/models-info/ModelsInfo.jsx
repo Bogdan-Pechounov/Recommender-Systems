@@ -7,6 +7,9 @@ import GenresInfo from './GenresInfo'
 
 import './models-info.scss'
 
+//pearson correlation between avg rating and bias
+const correlation = [0.6476632678791463, 0.6481719733693021, 0.6425793463113993]
+
 function ModelsInfo() {
   const [genresInfo, setGenresInfo] = useState({})
   const [featuresInfo, setFeaturesInfo] = useState()
@@ -26,7 +29,9 @@ function ModelsInfo() {
             The following values are computed by going through all the movies of
             a specific genre, and then summing over the latent features of these
             movies. This gives a measure of how much a feature correlates with
-            the presence of a genre.
+            the presence of a genre. <br />
+            The Pearson correlation between the bias and average rating of a
+            movie is {correlation[model]}.
           </p>
           <div style={{ marginLeft: 'auto', whiteSpace: 'nowrap' }}>
             <DropdownMenu

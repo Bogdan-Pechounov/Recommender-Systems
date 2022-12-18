@@ -28,6 +28,8 @@ export const options = {
 }
 
 export default function GenresInfo({ genresInfo }) {
+  if (!genresInfo) return
+
   function getData(genre, features) {
     const labels = Object.keys(features).map((k) => `Feature ${k}`)
     return {
