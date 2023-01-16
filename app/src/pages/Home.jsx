@@ -1,4 +1,5 @@
 import api from 'api/api'
+import recommender from 'api/recommender'
 import MovieRow from 'components/movie-row/MovieRow'
 import MovieSlider from 'components/movie-slider/MovieSlider'
 import React, { useEffect, useState } from 'react'
@@ -16,6 +17,7 @@ function Home() {
     api.getMovies(20, 1, 'top').then((movies) => setTopMovies(movies))
     api.getMovies(20, 1, 'recent').then((movies) => setRecentMovies(movies))
     api.getMovies(20, 1, 'trending').then((movies) => setTrendingMovies(movies))
+    recommender.genresInfo() //wake up server
   }, [])
   return (
     <>
